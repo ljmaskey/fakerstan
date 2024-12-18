@@ -1,0 +1,58 @@
+{
+  "name": "calebdw/fakerstan",
+  "description": "PHPStan extension for faker",
+  "type": "phpstan-extension",
+  "keywords": [
+    "faker",
+    "phpstan",
+    "static analysis"
+  ],
+  "homepage": "https://github.com/calebdw/fakerstan",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "CalebDW\\Fakerstan\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CalebDW\\Fakerstan\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Caleb White",
+      "email": "cdwhite3@pm.me"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "fakerphp/faker": "^1.24",
+    "phpstan/phpstan": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "extra": {
+    "phpstan": {
+      "includes": [
+        "extension.neon"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "test:phpstan:src": "phpstan analyze --ansi",
+    "test:phpstan:integration": "phpstan analyze --ansi -c tests/phpstan-tests.neon",
+    "test:phpunit": "phpunit --colors=always",
+    "test": [
+      "@test:phpstan:src",
+      "@test:phpstan:integration",
+      "@test:phpunit"
+    ]
+  }
+}
