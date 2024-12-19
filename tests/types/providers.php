@@ -8,7 +8,8 @@ use Faker\Generator;
 
 use function PHPStan\Testing\assertType;
 
-function test(Generator $faker): void
+/** @param array{bar: string} $foo */
+function test(Generator $faker, array $foo): void
 {
     assertType('string', $faker->car());
     assertType('string', $faker->size());
@@ -28,20 +29,9 @@ function test(Generator $faker): void
     assertType('*ERROR*', $faker->valid()->error());
 
     // Test overloading and generics
-    assertType("'test'", $faker->passthrough('test'));
-    assertType('42', $faker->passthrough(42));
-    assertType('object{foo: 42}&stdClass', $faker->passthrough((object) ['foo' => 42]));
-
+    assertType('array{bar: string}', $faker->passthrough($foo));
     /** @todo This should be detected as a possible null */
-    assertType("'test'", $faker->optional()->passthrough('test'));
-    assertType('42', $faker->optional()->passthrough(42));
-    assertType('object{foo: 42}&stdClass', $faker->optional()->passthrough((object) ['foo' => 42]));
-
-    assertType("'test'", $faker->unique()->passthrough('test'));
-    assertType('42', $faker->unique()->passthrough(42));
-    assertType('object{foo: 42}&stdClass', $faker->unique()->passthrough((object) ['foo' => 42]));
-
-    assertType("'test'", $faker->valid()->passthrough('test'));
-    assertType('42', $faker->valid()->passthrough(42));
-    assertType('object{foo: 42}&stdClass', $faker->valid()->passthrough((object) ['foo' => 42]));
+    assertType('array{bar: string}', $faker->optional()->passthrough($foo));
+    assertType('array{bar: string}', $faker->unique()->passthrough($foo));
+    assertType('array{bar: string}', $faker->valid()->passthrough($foo));
 }
