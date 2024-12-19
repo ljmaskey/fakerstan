@@ -5,40 +5,40 @@ declare(strict_types=1);
 namespace CalebDW\Fakerstan;
 
 use Faker\Generator;
+use Faker\Provider\Base;
+use PHPStan\Analyser\OutOfClassScope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
-use PHPStan\Reflection\MissingMethodFromReflectionException;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\ShouldNotHappenException;
-use ReflectionException;
 
-class ProviderExtension implements MethodsClassReflectionExtension
+final class ProviderExtension implements MethodsClassReflectionExtension
 {
     /** @var array<string, MethodReflection> */
     private array $methods = [];
 
-    public function __construct(private ReflectionProvider $reflectionProvider)
-    {
+    public function __construct(
+        private ReflectionProvider $reflectionProvider,
+        private FakerProvider $fakerProvider,
+    ) {
     }
 
-    /**
-     * @throws ReflectionException
-     * @throws ShouldNotHappenException
-     * @throws MissingMethodFromReflectionException
-     */
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         if (! $classReflection->is(Generator::class)) {
             return false;
         }
 
-        if (isset($this->methods[$this->getKey($classReflection, $methodName)])) {
+        $key = $this->getKey($classReflection, $methodName);
+
+        if (isset($this->methods[$key])) {
             return true;
         }
 
-        $native = $classReflection->getNativeReflection();
-        $providers = $native->getProperty('providers')->getValue();
+        /** @var list<Base|object> $providers */
+        $providers = $classReflection->getNativeReflection()
+            ->getProperty('providers')
+            ->getValue($this->fakerProvider->getFaker());
 
         foreach ($providers as $provider) {
             if (! method_exists($provider, $methodName)) {
@@ -49,7 +49,16 @@ class ProviderExtension implements MethodsClassReflectionExtension
                 continue;
             }
 
-            $methodReflection = $this->reflectionProvider->getClass($provider)->getNativeMethod($methodName);
+            $methodReflection = $this->reflectionProvider->getClass($provider::class)
+                ->getMethod($methodName, new OutOfClassScope());
+
+            if (! $methodReflection->isPublic()) {
+                continue;
+            }
+
+            $this->methods[$key] = $methodReflection;
+
+            return true;
         }
 
         return false;
