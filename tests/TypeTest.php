@@ -6,17 +6,19 @@ namespace CalebDW\Fakerstan\Tests;
 
 use PHPStan\Testing\TypeInferenceTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class TypeTest extends TypeInferenceTestCase
 {
     /** @return iterable<mixed> */
-    public static function dataFileAsserts(): iterable
+    public static function data(): iterable
     {
-        yield from self::gatherAssertTypes(__DIR__ . '/types/providers.php');
+        yield from self::gatherAssertTypes(__DIR__.'/types/providers.php');
     }
 
-    #[DataProvider('dataFileAsserts')]
-    public function testFileAsserts(string $assertType, string $file, mixed ...$args): void
+    #[DataProvider('data')]
+    #[Test]
+    public function fileAsserts(string $assertType, string $file, mixed ...$args): void
     {
         $this->assertFileAsserts($assertType, $file, ...$args);
     }
@@ -24,6 +26,6 @@ class TypeTest extends TypeInferenceTestCase
     /** @return string[] */
     public static function getAdditionalConfigFiles(): array
     {
-        return [__DIR__ . '/phpstan-tests.neon'];
+        return [__DIR__.'/phpstan-tests.neon'];
     }
 }

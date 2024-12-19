@@ -16,10 +16,11 @@ class TestProvider extends Base
     }
 
     /**
-    * @template T
-    * @param T $value
-    * @return T
-    */
+     * @template T
+     *
+     * @param  T  $value
+     * @return T
+     */
     public static function passthrough(mixed $value): mixed
     {
         return $value;

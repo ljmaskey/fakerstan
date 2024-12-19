@@ -71,6 +71,6 @@ final class ProviderExtension implements MethodsClassReflectionExtension
 
     private function getKey(ClassReflection $classReflection, string $methodName): string
     {
-        return $classReflection->getName() . '::' . $methodName;
+        return $classReflection->getName().'::'.$methodName;
     }
 }
