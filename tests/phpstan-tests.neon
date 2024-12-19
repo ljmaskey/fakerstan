@@ -1,0 +1,7 @@
+includes:
+  - ../extension.neon
+parameters:
+  fakerstan:
+    fakerProviderFactory: CalebDW\Fakerstan\Tests\Fixtures\TestFakerProviderFactory
+services:
+  - class: CalebDW\Fakerstan\Tests\Fixtures\TestFakerProviderFactory

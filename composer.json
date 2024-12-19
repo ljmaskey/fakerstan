@@ -1,6 +1,6 @@
 {
   "name": "calebdw/fakerstan",
-  "description": "PHPStan extension for faker",
+  "description": "PHPStan extension for Faker",
   "type": "phpstan-extension",
   "keywords": [
     "faker",
@@ -28,10 +28,10 @@
   "require": {
     "php": "^8.2",
     "fakerphp/faker": "^1.24",
-    "phpstan/phpstan": "^2.0"
+    "phpstan/phpstan": "^1.12 || ^2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.5"
+    "phpunit/phpunit": "^11.5"
   },
   "extra": {
     "phpstan": {
@@ -46,12 +46,10 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
-    "test:phpstan:src": "phpstan analyze --ansi",
-    "test:phpstan:integration": "phpstan analyze --ansi -c tests/phpstan-tests.neon",
+    "test:phpstan": "phpstan analyze --ansi",
     "test:phpunit": "phpunit --colors=always",
     "test": [
-      "@test:phpstan:src",
-      "@test:phpstan:integration",
+      "@test:phpstan",
       "@test:phpunit"
     ]
   }
