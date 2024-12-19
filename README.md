@@ -24,6 +24,92 @@ includes:
     - ./vendor/calebdw/fakerstan/extension.neon
 ```
 
+## Features
+
+### Custom Providers
+
+FakerStan will automatically look for unknown methods on the custom providers on
+the Faker instance and infer the return type based on the method signature, even
+generics are supported:
+
+```php
+<?php
+use Faker\Generator;
+use Faker\Provider\Base;
+
+class CustomProvider extends Base
+{
+    public function customMethod(): string
+    {
+        return 'custom';
+    }
+
+    /**
+     * @template T
+     * @param T $object
+     * @return class-string<T>
+     */
+    public function classFromObject(object $object): string
+    {
+        return $object::class
+    }
+}
+
+$faker = new Generator();
+$faker->addProvider(new CustomProvider($faker));
+
+$faker->customMethod(); // string
+$faker->classFromObject(new User); // class-string<User>
+```
+
+## Configuration
+
+In order for FakerStan to correctly detect the custom providers, it needs the actual
+Faker instance used in the project (or at least an instance with the custom
+providers added to it).
+
+If using Laravel, FakerStan will automatically resolve the faker instance from
+the container using the `fake()` helper function. If not using Laravel, you can
+specify a custom factory class in the `phpstan.neon(.dist)` configuration file:
+
+```neon
+parameters:
+  fakerstan:
+    fakerProviderFactory: App\CustomFakerProviderFactory
+services:
+  - class: App\CustomFakerProviderFactory
+```
+
+where `App\CustomFakerProviderFactory` is a class that creates an implementation of
+the `CalebDW\FakerStan\FakerProvider` interface:
+
+```php
+<?php
+
+use Faker\Generator;
+use CalebDW\FakerStan\FakerProvider;
+
+class CustomFakerProviderFactory
+{
+    public static function create(): FakerProvider
+    {
+        return new CustomFakerProvider();
+    }
+}
+
+class CustomFakerProvider implements FakerProvider
+{
+    public function getFaker(): Generator
+    {
+        // or from a DI container
+        $faker = new Generator();
+        $faker->addProvider(new CustomProvider($faker));
+        return $faker;
+    }
+}
+
+```
+
 ## Contributing
 
 Thank you for considering contributing! You can read the contribution guide [here](CONTRIBUTING.md).
