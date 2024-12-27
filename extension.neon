@@ -7,7 +7,11 @@ parametersSchema:
   ])
 services:
   - class: CalebDW\Fakerstan\FakerProviderFactory
-  - class: CalebDW\Fakerstan\FakerProvider
+  default_faker_provider:
+    class: CalebDW\Fakerstan\FakerProvider
     factory: @%fakerstan.fakerProviderFactory%::create
+  fakerstan_faker_provider: @default_faker_provider
   - class: CalebDW\Fakerstan\ProviderExtension
     tags: [phpstan.broker.methodsClassReflectionExtension]
+    arguments:
+      fakerProvider: @fakerstan_faker_provider
