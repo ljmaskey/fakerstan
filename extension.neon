@@ -1,9 +1,22 @@
 parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\FakerProviderFactory
+    # Default settings for PSR containers. The defaults are not valid together, but it does
+    # enable users to have to define fewer values.
+    psr:
+      phpContainerPath: .
+      returnsContainer: false
+      setsVariable: null
+      containerFakerId: Faker\Generator
 parametersSchema:
   fakerstan: structure([
     fakerProviderFactory: string(),
+    psr: structure([
+      phpContainerPath: string(),
+      returnsContainer: bool(),
+      setsVariable: schema(string(), nullable()),
+      containerFakerId: string(),
+    ]),
   ])
 services:
   - class: CalebDW\Fakerstan\FakerProviderFactory
