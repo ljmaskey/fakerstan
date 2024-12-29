@@ -15,7 +15,7 @@ class ContainerClass implements ContainerInterface
         return match ($id) {
             'generatorId' => new Generator(),
             'notGeneratorId' => new \stdClass(),
-            default => throw new class () extends \Exception implements NotFoundExceptionInterface {
+            default => throw new class() extends \Exception implements NotFoundExceptionInterface {
             },
         };
     }
