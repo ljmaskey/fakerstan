@@ -23,6 +23,14 @@ services:
   default_faker_provider:
     class: CalebDW\Fakerstan\FakerProvider
     factory: @%fakerstan.fakerProviderFactory%::create
+  psr_container_faker_provider:
+    class: CalebDW\Fakerstan\PsrContainerFakerProvider
+    arguments:
+      phpContainerPath: %fakerstan.psr.phpContainerPath%
+      returnsContainer: %fakerstan.psr.returnsContainer%
+      setsVariable: %fakerstan.psr.setsVariable%
+      containerFakerId: %fakerstan.psr.containerFakerId%
+
   fakerstan_faker_provider: @default_faker_provider
   - class: CalebDW\Fakerstan\ProviderExtension
     tags: [phpstan.broker.methodsClassReflectionExtension]
