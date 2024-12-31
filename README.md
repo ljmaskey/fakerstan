@@ -79,7 +79,7 @@ can use the PsrContainerFakerProviderFactory.
 parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
-    psr:
+    psrProvider:
       phpContainerPath: /path/to/container.php
       ...
 ```
@@ -98,7 +98,7 @@ If using Symfony, for example, you could use something like:
 parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
-    psr:
+    psrProvider:
       phpContainerPath: /opt/project/var/cache/dev/App_KernelDevDebugContainer.php
 ```
 

@@ -1,14 +1,14 @@
 parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\FakerProviderFactory
-    psr:
+    psrProvider:
       phpContainerPath: <Set path in your configuration>
       setsVariable: null
       containerFakerId: Faker\Generator
 parametersSchema:
   fakerstan: structure([
     fakerProviderFactory: string(),
-    psr: structure([
+    psrProvider: structure([
       phpContainerPath: string(),
       setsVariable: schema(string(), nullable()),
       containerFakerId: string()
@@ -18,9 +18,9 @@ services:
   - class: CalebDW\Fakerstan\FakerProviderFactory
   - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
     arguments:
-      phpContainerPath: %fakerstan.psr.phpContainerPath%
-      setsVariable: %fakerstan.psr.setsVariable%
-      containerFakerId: %fakerstan.psr.containerFakerId%
+      phpContainerPath: %fakerstan.psrProvider.phpContainerPath%
+      setsVariable: %fakerstan.psrProvider.setsVariable%
+      containerFakerId: %fakerstan.psrProvider.containerFakerId%
   - class: CalebDW\Fakerstan\FakerProvider
     factory: @%fakerstan.fakerProviderFactory%::create
   - class: CalebDW\Fakerstan\ProviderExtension
