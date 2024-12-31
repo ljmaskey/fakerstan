@@ -55,7 +55,7 @@ class PsrContainerFakerProviderTest extends TestCase
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
         $faker = $sut->getFaker();
 
-        self::assertInstanceOf(Generator::class, $faker);
+        $this->assertInstanceOf(Generator::class, $faker);
     }
 
     #[Test]
@@ -65,13 +65,13 @@ class PsrContainerFakerProviderTest extends TestCase
         $sut = new PsrContainerFakerProvider($containerFilename, 'containerVariable', 'generatorId');
         $faker = $sut->getFaker();
 
-        self::assertInstanceOf(Generator::class, $faker);
+        $this->assertInstanceOf(Generator::class, $faker);
     }
 
     #[Test]
     public function getFakerThrowsExceptionWhenUnableToReadContainerFile()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = __DIR__.'/a-file-that-does-not-exist';
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
@@ -81,7 +81,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function getFakerThrowsExceptionWhenTheContainerFileIsExpectedToReturnContainerButDoesNot()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = $this->containerFilePath('EmptyContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
@@ -91,7 +91,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function getFakerThrowsExceptionWhenTheContainerFileIsExpectedToSetAVariableButDoesNot()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = $this->containerFilePath('EmptyContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, 'containerVariable', 'generatorId');
@@ -101,7 +101,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function getFakerThrowsExceptionWhenTheDeterminedContainerIsNotActuallyAContainer()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = $this->containerFilePath('VariableSettingContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, 'nonContainerVariable', 'generatorId');
@@ -111,7 +111,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function getFakerThrowsExceptionWhenTheContainerDoesNotHaveServiceWithId()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'id-not-in-container');
@@ -121,7 +121,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function getFakerThrowsExceptionWhenTheNamedServiceIsNotAGenerator()
     {
-        self::expectException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'notGeneratorId');
