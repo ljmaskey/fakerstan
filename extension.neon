@@ -16,6 +16,11 @@ parametersSchema:
   ])
 services:
   - class: CalebDW\Fakerstan\FakerProviderFactory
+  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
+    arguments:
+      phpContainerPath: %fakerstan.psr.phpContainerPath%
+      setsVariable: %fakerstan.psr.setsVariable%
+      containerFakerId: %fakerstan.psr.containerFakerId%
   - class: CalebDW\Fakerstan\FakerProvider
     factory: @%fakerstan.fakerProviderFactory%::create
   - class: CalebDW\Fakerstan\ProviderExtension

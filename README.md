@@ -82,14 +82,9 @@ parameters:
     psr:
       phpContainerPath: /path/to/container.php
       ...
-services:
-  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
-    arguments:
-      phpContainerPath: %fakerstan.psr.phpContainerPath%
-      ...
 ```
 
-The parameters that can be set (and subsequently injected as arguments to the factory) are:
+The parameters that can be set are:
 * `phpContainerPath`: the path to the PHP file that configures the container.
 * `setsVariable`: if the file that configures the container assigns it to a global variable,
 this parameter is used to indicate the name of that variable. If the container file returns
@@ -105,13 +100,9 @@ parameters:
     fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
     psr:
       phpContainerPath: /opt/project/var/cache/dev/App_KernelDevDebugContainer.php
-services:
-  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
-    arguments:
-      phpContainerPath: %fakerstan.psr.phpContainerPath%
 ```
 
-to set the path to the Symfony container and then inject that path to the factory. The default
+to use the PsrContainerFakerProviderFactory and set the path to the Symfony container. The default
 values for the additional parameters are correct for Symfony.
 
 If not using Laravel or some other PSR-11 compliant container, you can specify a custom
