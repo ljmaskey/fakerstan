@@ -19,7 +19,7 @@ class PsrContainerFakerProviderFactory
     public function create(): FakerProvider
     {
         if (is_null($this->phpContainerPath)) {
-            throw new RuntimeException('PsrContainerFakerProviderFactory requires a value for "parameters › fakerstan › psrProvider › phpContainerPath"');
+            throw new RuntimeException(self::class.' requires a value for the "fakerstan.psrProvider.phpContainerPath" parameter');
         }
 
         return new PsrContainerFakerProvider(
