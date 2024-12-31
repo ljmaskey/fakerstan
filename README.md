@@ -80,7 +80,10 @@ parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
 services:
-  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory('/path/to/container.php', 'myContainer', 'FakerId')
+  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
+    arguments:
+      phpContainerPath: /path/to/container.php
+      ...
 ```
 
 The first parameter for this factory specifies the path to the PHP file that configures
