@@ -6,7 +6,6 @@ namespace CalebDW\Fakerstan\Tests;
 
 use CalebDW\Fakerstan\PsrContainerFakerProvider;
 use Faker\Generator;
-use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -15,43 +14,10 @@ use RuntimeException;
 #[CoversClass(PsrContainerFakerProvider::class)]
 class PsrContainerFakerProviderTest extends TestCase
 {
-    private static ?string $temporaryContainerPath = null;
-
-    #[After]
-    public static function cleanUpTemporaryContainer(): void
-    {
-        if (is_string(static::$temporaryContainerPath)) {
-            if (file_exists(static::$temporaryContainerPath)) {
-                unlink(static::$temporaryContainerPath);
-            }
-        }
-
-        static::$temporaryContainerPath = null;
-    }
-
-    /*
-     * Every time we want to include a file for the container, we need to make sure
-     * that it is a new file: otherwise, once one test has included it, the rest
-     * will act differently when they go to do it.
-     */
-    private function containerFilePath(string $containerFixtureFileName): string
-    {
-        $sourceContainerFileName = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/';
-        $sourceContainerFileName .= $containerFixtureFileName;
-
-        static::$temporaryContainerPath = tempnam(sys_get_temp_dir(), 'fakerstan-tests');
-
-        // Make a copy of the source filename in the new (temporary) file, whose name
-        // has hopefully not been included already.
-        copy($sourceContainerFileName, static::$temporaryContainerPath);
-
-        return static::$temporaryContainerPath;
-    }
-
     #[Test]
     public function itUsesContainerReturnedFromFile()
     {
-        $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/ReturningContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
         $faker = $sut->getFaker();
 
@@ -61,7 +27,7 @@ class PsrContainerFakerProviderTest extends TestCase
     #[Test]
     public function itUsesContainerSetInVariable()
     {
-        $containerFilename = $this->containerFilePath('VariableSettingContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/VariableSettingContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, 'containerVariable', 'generatorId');
         $faker = $sut->getFaker();
 
@@ -83,7 +49,7 @@ class PsrContainerFakerProviderTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $containerFilename = $this->containerFilePath('EmptyContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/EmptyContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
         $sut->getFaker();
     }
@@ -93,7 +59,7 @@ class PsrContainerFakerProviderTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $containerFilename = $this->containerFilePath('EmptyContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/EmptyContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, 'containerVariable', 'generatorId');
         $sut->getFaker();
     }
@@ -103,7 +69,7 @@ class PsrContainerFakerProviderTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $containerFilename = $this->containerFilePath('VariableSettingContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/VariableSettingContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, 'nonContainerVariable', 'generatorId');
         $sut->getFaker();
     }
@@ -113,7 +79,7 @@ class PsrContainerFakerProviderTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/ReturningContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'id-not-in-container');
         $sut->getFaker();
     }
@@ -123,7 +89,7 @@ class PsrContainerFakerProviderTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
+        $containerFilename = __DIR__.'/Fixtures/PsrContainerFakerProviderTest/ReturningContainerFile.php';
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'notGeneratorId');
         $sut->getFaker();
     }

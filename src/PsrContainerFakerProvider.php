@@ -34,7 +34,7 @@ final class PsrContainerFakerProvider implements FakerProvider
             throw new RuntimeException('Could not read container PHP file');
         }
 
-        $maybeContainer = require_once $this->phpContainerPath;
+        $maybeContainer = require $this->phpContainerPath;
 
         if (is_null($this->setsVariable) && ($maybeContainer === 1)) {
             throw new RuntimeException('Container file was expected to return the container, but it returned nothing');
