@@ -31,7 +31,7 @@ final class PsrContainerFakerProvider implements FakerProvider
     private function getGeneratorFromContainer(): Generator
     {
         if (! is_readable($this->phpContainerPath)) {
-            throw new RuntimeException('Could not read container PHP file');
+            throw new RuntimeException('Could not read container PHP file ('.$this->phpContainerPath.')');
         }
 
         $maybeContainer = require $this->phpContainerPath;
