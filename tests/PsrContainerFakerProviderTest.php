@@ -49,7 +49,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerUsesContainerReturnedFromFile()
+    public function itUsesContainerReturnedFromFile()
     {
         $containerFilename = $this->containerFilePath('ReturningContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, null, 'generatorId');
@@ -59,7 +59,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerUsesContainerSetInVariable()
+    public function itUsesContainerSetInVariable()
     {
         $containerFilename = $this->containerFilePath('VariableSettingContainerFile.php');
         $sut = new PsrContainerFakerProvider($containerFilename, 'containerVariable', 'generatorId');
@@ -69,7 +69,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenUnableToReadContainerFile()
+    public function itThrowsExceptionWhenUnableToReadContainerFile()
     {
         $this->expectException(RuntimeException::class);
 
@@ -79,7 +79,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenTheContainerFileIsExpectedToReturnContainerButDoesNot()
+    public function itThrowsExceptionWhenTheContainerFileIsExpectedToReturnContainerButDoesNot()
     {
         $this->expectException(RuntimeException::class);
 
@@ -89,7 +89,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenTheContainerFileIsExpectedToSetAVariableButDoesNot()
+    public function itThrowsExceptionWhenTheContainerFileIsExpectedToSetAVariableButDoesNot()
     {
         $this->expectException(RuntimeException::class);
 
@@ -99,7 +99,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenTheDeterminedContainerIsNotActuallyAContainer()
+    public function itThrowsExceptionWhenTheDeterminedContainerIsNotActuallyAContainer()
     {
         $this->expectException(RuntimeException::class);
 
@@ -109,7 +109,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenTheContainerDoesNotHaveServiceWithId()
+    public function itThrowsExceptionWhenTheContainerDoesNotHaveServiceWithId()
     {
         $this->expectException(RuntimeException::class);
 
@@ -119,7 +119,7 @@ class PsrContainerFakerProviderTest extends TestCase
     }
 
     #[Test]
-    public function getFakerThrowsExceptionWhenTheNamedServiceIsNotAGenerator()
+    public function itThrowsExceptionWhenTheNamedServiceIsNotAGenerator()
     {
         $this->expectException(RuntimeException::class);
 
