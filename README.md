@@ -79,29 +79,40 @@ can use the PsrContainerFakerProviderFactory.
 parameters:
   fakerstan:
     fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
+    psr:
+      phpContainerPath: /path/to/container.php
+      ...
 services:
   - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
     arguments:
-      phpContainerPath: /path/to/container.php
+      phpContainerPath: %fakerstan.psr.phpContainerPath%
       ...
 ```
 
-The first parameter for this factory specifies the path to the PHP file that configures
-the container. If this configuration file assigns the configured container to a global
-variable, the second parameter is used to indicate the name of that variable. If this
-parameter is null (which is the default), this indicates that the configuration file
-returns the container itself. The third parameter indicates the ID that the container
-uses for retrieving the Faker Generator. By default, this parameter is the Generator's
-class name (ie. `Faker\Generator`).
+The parameters that can be set (and subsequently injected as arguments to the factory) are:
+* `phpContainerPath`: the path to the PHP file that configures the container.
+* `setsVariable`: if the file that configures the container assigns it to a global variable,
+this parameter is used to indicate the name of that variable. If the container file returns
+the container itself, set this parameter is null (which is the default).
+* `containerFakerId`: the ID that the container uses for retrieving the Faker Generator. By
+default, this parameter is the Generator's class name (ie. `Faker\Generator`).
 
 If using Symfony, for example, you could use something like:
 
 ```neon
+parameters:
+  fakerstan:
+    fakerProviderFactory: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
+    psr:
+      phpContainerPath: /opt/project/var/cache/dev/App_KernelDevDebugContainer.php
 services:
-- class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory('/opt/project/var/cache/dev/App_KernelDevDebugContainer.php')
+  - class: CalebDW\Fakerstan\PsrContainerFakerProviderFactory
+    arguments:
+      phpContainerPath: %fakerstan.psr.phpContainerPath%
 ```
 
-as the defaults for the additional parameters are correct for Symfony.
+to set the path to the Symfony container and then inject that path to the factory. The default
+values for the additional parameters are correct for Symfony.
 
 If not using Laravel or some other PSR-11 compliant container, you can specify a custom
 factory class in the `phpstan.neon(.dist)` configuration file:
