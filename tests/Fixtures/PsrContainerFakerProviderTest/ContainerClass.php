@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CalebDW\Fakerstan\Tests\Fixtures\PsrContainerFakerProviderTest;
 
+use Exception;
 use Faker\Generator;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use stdClass;
 
 class ContainerClass implements ContainerInterface
 {
@@ -14,8 +16,8 @@ class ContainerClass implements ContainerInterface
     {
         return match ($id) {
             'generatorId' => new Generator(),
-            'notGeneratorId' => new \stdClass(),
-            default => throw new class() extends \Exception implements NotFoundExceptionInterface {
+            'notGeneratorId' => new stdClass(),
+            default => throw new class() extends Exception implements NotFoundExceptionInterface {
             },
         };
     }
